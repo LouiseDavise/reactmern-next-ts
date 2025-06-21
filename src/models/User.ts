@@ -9,6 +9,15 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    age: { 
+        type: Number 
+    },
+    birthday: {
+        type: Date 
+    },
+    phoneNumber: {
+        type: String 
     }
 });
 
