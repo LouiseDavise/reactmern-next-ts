@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -8,23 +10,27 @@ export default function LoginPage() {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
+    useEffect(() => {
+        axios.get('/api/auth/me')
+            .then(res => {
+                const user = res.data;
+                if (user?.role === 'admin') router.push('/admin');
+                else if (user?.role === 'user') router.push('/dashboard');
+            })
+            .catch(() => {
+                // Not logged in — do nothing
+            });
+    }, []);
+    
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setMessage('Logging in...');
 
-        const res = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({username, password})
-        });
-
-        const data = await res.json();
-
-        if(res.ok){
+        axios.post('/api/auth/login', { username, password })
+        .then((res) => {
+            const data = res.data;
             setMessage('Login successful');
-            console.log(data.role);
+
             if (data.role === 'admin') {
                 console.log("RUN ADMIN");
                 router.push('/admin');
@@ -32,9 +38,11 @@ export default function LoginPage() {
                 console.log("RUN USER");
                 router.push('/dashboard');
             }
-        }else{
-            setMessage(data.error || 'Login failed');
-        }
+        })
+        .catch((error) => {
+            const errorMsg = error.response?.data?.error || 'Login failed';
+            setMessage(errorMsg);
+        });
     };
     
     return (
