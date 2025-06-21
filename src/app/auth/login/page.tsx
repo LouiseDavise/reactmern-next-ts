@@ -50,7 +50,7 @@ export default function LoginPage() {
             <h1>Login</h1>
             <form onSubmit={handleSubmit}>
                 <label>
-                Username:
+                Username or Email:
                 <input value={username} onChange={e => setUsername(e.target.value)} required />
                 </label>
                 <br />

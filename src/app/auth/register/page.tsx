@@ -20,6 +20,7 @@ export default function RegisterPage(){
 
     const [form, setForm] = useState({
         username: '',
+        email: '',
         password: '',
         age: '',
         birthday: '',
@@ -52,6 +53,7 @@ export default function RegisterPage(){
     return (
         <form onSubmit={handleSubmit}>
             <input name="username" placeholder="Username" onChange={handleChange} required />
+            <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
             <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
             <input name="age" type="number" placeholder="Age" onChange={handleChange} />
             <input name="birthday" type="date" onChange={handleChange} />
