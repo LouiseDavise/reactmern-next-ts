@@ -7,6 +7,7 @@ type User = {
   age?: number;
   birthday?: string;
   phoneNumber?: string;
+  role?: string;
 };
 
 export default function UserList() {

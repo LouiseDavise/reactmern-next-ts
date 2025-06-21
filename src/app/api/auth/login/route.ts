@@ -6,18 +6,18 @@ import {User} from '@/models/User';
 
 export async function POST(req: NextRequest){
     await dbConnect();
-    const {username, password, role} = await req.json();
+    const {username, password} = await req.json();
     const user = await User.findOne({username});
     
     if(!user || !(await bcrypt.compare(password, user.password))){
         return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
-
-    if (user && user.role !== role) {
-        return NextResponse.json({ error: `Access denied. You are not a ${role}.` }, { status: 403 });
-    }
     
     const token = jwt.sign({ userId: user._id, role : user.role }, process.env.JWT_SECRET!, {expiresIn: '1h'});
 
-    return NextResponse.json({token});
+    return NextResponse.json({
+        message: 'Login successful',
+        token,
+        role: user.role,
+    });
 }
