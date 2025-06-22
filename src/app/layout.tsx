@@ -1,18 +1,14 @@
-import type { Metadata } from 'next';
+import { ReactNode } from 'react';
+import { Providers } from './providers';
 
-export const metadata: Metadata = {
-  title: 'ReactMERN App',
-  description: 'Full-stack app using Next.js + MongoDB',
-};
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: ReactNode }) {
+    return (
+        <html lang="en">
+            <body>
+                <Providers>
+                    {children}
+                </Providers>
+            </body>
+        </html>
+    );
 }
